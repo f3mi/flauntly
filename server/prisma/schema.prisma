@@ -1,0 +1,123 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(uuid())
+  email         String    @unique
+  password      String
+  role          String    @default("customer") // customer or stylist
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Common fields
+  firstName     String
+  lastName      String
+  phoneNumber   String?
+  profileImage  String?
+
+  // Stylist specific fields
+  stylistProfile StylistProfile?
+  
+  // Customer specific fields
+  bookings      Booking[]    @relation("CustomerBookings")
+  reviews       Review[]
+  
+  // Chat related
+  sentMessages     Message[]  @relation("SentMessages")
+  receivedMessages Message[]  @relation("ReceivedMessages")
+  chats           Chat[]     @relation("ChatParticipants")
+}
+
+model StylistProfile {
+  id            String    @id @default(uuid())
+  userId        String    @unique
+  user          User      @relation(fields: [userId], references: [id])
+  bio           String?
+  location      Json      // Stores latitude, longitude and address
+  businessHours Json      // Stores working hours for each day
+  services      Service[]
+  portfolio     PortfolioImage[]
+  bookings      Booking[] @relation("StylistBookings")
+  rating        Float     @default(0)
+  reviewCount   Int       @default(0)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Service {
+  id              String    @id @default(uuid())
+  stylistId       String
+  stylist         StylistProfile @relation(fields: [stylistId], references: [id])
+  name            String
+  description     String?
+  duration        Int      // in minutes
+  price           Float
+  category        String
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  bookings        Booking[]
+}
+
+model PortfolioImage {
+  id          String    @id @default(uuid())
+  stylistId   String
+  stylist     StylistProfile @relation(fields: [stylistId], references: [id])
+  imageUrl    String
+  caption     String?
+  createdAt   DateTime  @default(now())
+}
+
+model Booking {
+  id          String    @id @default(uuid())
+  customerId  String
+  customer    User      @relation("CustomerBookings", fields: [customerId], references: [id])
+  stylistId   String
+  stylist     StylistProfile @relation("StylistBookings", fields: [stylistId], references: [id])
+  serviceId   String
+  service     Service   @relation(fields: [serviceId], references: [id])
+  dateTime    DateTime
+  status      String    @default("pending") // pending, confirmed, completed, cancelled
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  review      Review?
+}
+
+model Review {
+  id          String    @id @default(uuid())
+  bookingId   String    @unique
+  booking     Booking   @relation(fields: [bookingId], references: [id])
+  customerId  String
+  customer    User      @relation(fields: [customerId], references: [id])
+  rating      Int
+  comment     String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Chat {
+  id          String    @id @default(uuid())
+  participants User[]   @relation("ChatParticipants")
+  messages    Message[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Message {
+  id          String    @id @default(uuid())
+  chatId      String
+  chat        Chat      @relation(fields: [chatId], references: [id])
+  senderId    String
+  sender      User      @relation("SentMessages", fields: [senderId], references: [id])
+  receiverId  String
+  receiver    User      @relation("ReceivedMessages", fields: [receiverId], references: [id])
+  content     String
+  type        String    @default("text") // text, image
+  read        Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+} 

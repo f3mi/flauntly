@@ -1,27 +1,31 @@
 {
-  "name": "flauntly-server",
+  "name": "server",
   "version": "1.0.0",
-  "description": "Flauntly backend server",
+  "description": "Backend server for Flauntly",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "start": "node index.js",
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "lint": "eslint ."
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
-    "dotenv": "^16.3.1",
+    "dotenv": "^16.4.4",
     "express": "^4.18.2",
     "express-validator": "^7.0.1",
-    "jsonwebtoken": "^9.0.1",
-    "pg": "^8.11.3",
-    "pg-hstore": "^2.3.4",
-    "sequelize": "^6.32.1",
-    "socket.io": "^4.7.2",
-    "multer": "^1.4.5-lts.1",
-    "aws-sdk": "^2.1450.0"
+    "jsonwebtoken": "^9.0.2",
+    "morgan": "^1.10.0"
   },
   "devDependencies": {
-    "nodemon": "^3.0.1"
-  }
-} 
+    "eslint": "^8.56.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-node": "^11.1.0",
+    "nodemon": "^3.0.3",
+    "prettier": "^3.2.5"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
