@@ -1,128 +1,189 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Disclosure, Transition } from '@headlessui/react';
-import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
+import { Menu, Transition } from '@headlessui/react';
+import { ChevronDownIcon } from '@heroicons/react/20/solid';
 
-const navigation = [
-  { name: 'Home', href: '/' },
-  { name: 'Search', href: '/search' },
-  { name: 'Categories', href: '/categories' },
-  { name: 'Font Demo', href: '/font-demo' },
-];
-
-export default function Navbar() {
-  const [scrolled, setScrolled] = useState(false);
+const Navbar = () => {
+  const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
 
-  // Handle navbar scroll effect
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 20) {
-        setScrolled(true);
-      } else {
-        setScrolled(false);
-      }
+      const scrollPosition = window.scrollY;
+      setIsScrolled(scrollPosition > 20);
     };
 
     window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Check if we're on the home page
+  const isHomePage = location.pathname === '/';
+  const isTransparent = isHomePage && !isScrolled;
+
   return (
-    <Disclosure as="nav" className={`navbar ${scrolled ? 'navbar-scrolled' : ''}`}>
-      {({ open }) => (
-        <>
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="flex h-16 items-center justify-between">
-              <div className="flex items-center">
-                <Link to="/" className="font-cabinet font-black text-2xl tracking-tight text-gray-900">
-                  <span className="text-primary-600">F</span>launtly
-                </Link>
-              </div>
-              
-              <div className="hidden md:block">
-                <div className="flex items-center space-x-1">
-                  {navigation.map((item) => (
-                    <Link
-                      key={item.name}
-                      to={item.href}
-                      className={`nav-link ${location.pathname === item.href ? 'nav-link-active' : ''}`}
-                    >
-                      {item.name}
-                    </Link>
-                  ))}
-                </div>
-              </div>
-              
-              <div className="hidden md:block">
-                <div className="flex items-center space-x-3">
-                  <Link to="/login" className="outline-button">
-                    Sign in
-                  </Link>
-                  <Link to="/business" className="nav-cta-button">
-                    List your business
-                  </Link>
-                </div>
-              </div>
-              
-              <div className="md:hidden">
-                <Disclosure.Button className="mobile-menu-button">
-                  <span className="sr-only">Open main menu</span>
-                  {open ? (
-                    <XMarkIcon className="block h-5 w-5" aria-hidden="true" />
-                  ) : (
-                    <Bars3Icon className="block h-5 w-5" aria-hidden="true" />
-                  )}
-                </Disclosure.Button>
-              </div>
-            </div>
+    <header className={`navbar ${isTransparent ? 'navbar-transparent' : 'navbar-solid'}`}>
+      <div className="navbar-container">
+        <div className="navbar-content">
+          {/* Logo */}
+          <Link to="/" className="navbar-logo">
+            <span className={`text-2xl font-bold ${
+              isTransparent ? 'text-white' : 'gradient-text'
+            }`}>
+              <span className="font-black">F</span>launtly
+            </span>
+          </Link>
+
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center space-x-5">
+            {/* Login Link */}
+            <Link 
+              to="/login" 
+              className={`navbar-link ${isTransparent ? 'navbar-link-transparent' : 'navbar-link-solid'}`}
+            >
+              Login
+            </Link>
+
+            {/* For Business Link */}
+            <Link 
+              to="/business" 
+              className={`navbar-link ${isTransparent ? 'navbar-link-transparent' : 'navbar-link-solid'}`}
+            >
+              For business
+            </Link>
+
+            {/* Menu Dropdown */}
+            <Menu as="div" className="relative">
+              <Menu.Button 
+                className={`navbar-link flex items-center ${isTransparent ? 'navbar-link-transparent' : 'navbar-link-solid'}`}
+              >
+                Menu
+                <ChevronDownIcon className="ml-1 h-4 w-4" aria-hidden="true" />
+              </Menu.Button>
+              <Transition
+                as={Fragment}
+                enter="transition ease-out duration-100"
+                enterFrom="transform opacity-0 scale-95"
+                enterTo="transform opacity-100 scale-100"
+                leave="transition ease-in duration-75"
+                leaveFrom="transform opacity-100 scale-100"
+                leaveTo="transform opacity-0 scale-95"
+              >
+                <Menu.Items className="dropdown-menu">
+                  <div className="py-1">
+                    <div className="dropdown-header">
+                      For Customers
+                    </div>
+                    <Menu.Item>
+                      {({ active }) => (
+                        <Link
+                          to="/login"
+                          className={`dropdown-item ${active ? 'text-blue-700' : 'text-gray-700'}`}
+                        >
+                          Login or sign up
+                        </Link>
+                      )}
+                    </Menu.Item>
+                    <Menu.Item>
+                      {({ active }) => (
+                        <Link
+                          to="/download"
+                          className={`dropdown-item ${active ? 'text-blue-700' : 'text-gray-700'}`}
+                        >
+                          Download the app
+                        </Link>
+                      )}
+                    </Menu.Item>
+                    <div className="dropdown-divider"></div>
+                    <div className="dropdown-header">
+                      For Business
+                    </div>
+                    <Menu.Item>
+                      {({ active }) => (
+                        <Link
+                          to="/business"
+                          className={`dropdown-item ${active ? 'text-blue-700' : 'text-gray-700'}`}
+                        >
+                          List your business
+                        </Link>
+                      )}
+                    </Menu.Item>
+                  </div>
+                </Menu.Items>
+              </Transition>
+            </Menu>
           </div>
 
-          <Transition
-            enter="transition duration-150 ease-out"
-            enterFrom="transform scale-95 opacity-0"
-            enterTo="transform scale-100 opacity-100"
-            leave="transition duration-100 ease-in"
-            leaveFrom="transform scale-100 opacity-100"
-            leaveTo="transform scale-95 opacity-0"
-          >
-            <Disclosure.Panel className="md:hidden bg-white shadow-md rounded-b-lg mx-4 mt-2">
-              <div className="px-2 pb-3 pt-2 space-y-1">
-                {navigation.map((item) => (
-                  <Disclosure.Button
-                    key={item.name}
-                    as={Link}
-                    to={item.href}
-                    className={`block px-3 py-2 font-cabinet font-medium text-sm rounded-lg ${
-                      location.pathname === item.href
-                        ? 'text-primary-700 bg-primary-50'
-                        : 'text-gray-700 hover:bg-gray-50 hover:text-primary-600'
-                    }`}
-                  >
-                    {item.name}
-                  </Disclosure.Button>
-                ))}
-                <div className="mt-4 pt-4 border-t border-gray-100 flex flex-col space-y-2 px-2">
-                  <Link
-                    to="/login"
-                    className="outline-button w-full flex justify-center"
-                  >
-                    Sign in
-                  </Link>
-                  <Link
-                    to="/business"
-                    className="nav-cta-button w-full"
-                  >
-                    List your business
-                  </Link>
+          {/* Mobile menu button */}
+          <Menu as="div" className="relative md:hidden">
+            <Menu.Button 
+              className={`navbar-mobile-button ${
+                isTransparent ? 'navbar-mobile-button-transparent' : 'navbar-mobile-button-solid'
+              }`}
+            >
+              <span className="sr-only">Open menu</span>
+              <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            </Menu.Button>
+            <Transition
+              as={Fragment}
+              enter="transition ease-out duration-100"
+              enterFrom="transform opacity-0 scale-95"
+              enterTo="transform opacity-100 scale-100"
+              leave="transition ease-in duration-75"
+              leaveFrom="transform opacity-100 scale-100"
+              leaveTo="transform opacity-0 scale-95"
+            >
+              <Menu.Items className={`navbar-mobile-menu dropdown-menu ${
+                isTransparent ? 'navbar-mobile-menu-transparent' : 'navbar-mobile-menu-solid'
+              }`}>
+                <div className="py-1">
+                  <div className="dropdown-header">
+                    For Customers
+                  </div>
+                  <Menu.Item>
+                    {({ active }) => (
+                      <Link
+                        to="/login"
+                        className={`dropdown-item ${active ? 'text-blue-700' : 'text-gray-700'}`}
+                      >
+                        Login or sign up
+                      </Link>
+                    )}
+                  </Menu.Item>
+                  <Menu.Item>
+                    {({ active }) => (
+                      <Link
+                        to="/download"
+                        className={`dropdown-item ${active ? 'text-blue-700' : 'text-gray-700'}`}
+                      >
+                        Download the app
+                      </Link>
+                    )}
+                  </Menu.Item>
+                  <div className="dropdown-divider"></div>
+                  <div className="dropdown-header">
+                    For Business
+                  </div>
+                  <Menu.Item>
+                    {({ active }) => (
+                      <Link
+                        to="/business"
+                        className={`dropdown-item ${active ? 'text-blue-700' : 'text-gray-700'}`}
+                      >
+                        List your business
+                      </Link>
+                    )}
+                  </Menu.Item>
                 </div>
-              </div>
-            </Disclosure.Panel>
-          </Transition>
-        </>
-      )}
-    </Disclosure>
+              </Menu.Items>
+            </Transition>
+          </Menu>
+        </div>
+      </div>
+    </header>
   );
-} 
+};
+
+export default Navbar; 

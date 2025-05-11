@@ -7,6 +7,18 @@ const navigation = {
     { name: 'About', href: '/about' },
     { name: 'For Business', href: '/for-business' },
   ],
+  customers: [
+    { name: 'Find Businesses', href: '/search' },
+    { name: 'Download App', href: '/download' },
+    { name: 'Book Appointment', href: '/book' },
+    { name: 'Gift Cards', href: '/gift-cards' },
+  ],
+  business: [
+    { name: 'For Business', href: '/for-business' },
+    { name: 'Pricing', href: '/pricing' },
+    { name: 'Partner Program', href: '/partners' },
+    { name: 'Resources', href: '/resources' },
+  ],
   company: [
     { name: 'About Us', href: '/about' },
     { name: 'Careers', href: '/careers' },
@@ -58,28 +70,138 @@ const navigation = {
 
 export default function Footer() {
   return (
-    <footer className="bg-white">
-      <div className="mx-auto max-w-7xl overflow-hidden px-6 py-20 sm:py-24 lg:px-8">
-        <nav className="-mb-6 columns-2 sm:flex sm:justify-center sm:space-x-12" aria-label="Footer">
-          {navigation.main.map((item) => (
-            <div key={item.name} className="pb-6">
-              <Link to={item.href} className="text-sm leading-6 text-gray-600 hover:text-gray-900">
-                {item.name}
+    <footer className="bg-gradient-to-br from-slate-50 to-blue-50">
+      {/* Decorative top border with gradient */}
+      <div className="h-1 w-full bg-gradient-to-r from-blue-700 via-indigo-600 to-blue-500"></div>
+      
+      <div className="relative overflow-hidden">
+        {/* Decorative gradient blobs */}
+        <div className="absolute -top-24 -right-16 w-64 h-64 rounded-full bg-blue-100/50 filter blur-[50px]"></div>
+        <div className="absolute -bottom-32 -left-16 w-80 h-80 rounded-full bg-indigo-100/40 filter blur-[60px]"></div>
+        
+        <div className="mx-auto max-w-7xl px-6 py-12 sm:py-16 lg:px-8 relative z-10">
+          {/* Logo and app download */}
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 pb-8 border-b border-gray-200">
+            <div>
+              <Link to="/" className="inline-block">
+                <span className="text-3xl font-bold gradient-text">
+                  <span className="font-black">F</span>launtly
+                </span>
               </Link>
+              <p className="mt-2 text-sm text-gray-600 max-w-xs">
+                The top-rated destination for beauty and wellness appointments
+              </p>
             </div>
-          ))}
-        </nav>
-        <div className="mt-10 flex justify-center space-x-10">
-          {navigation.social.map((item) => (
-            <a key={item.name} href={item.href} className="text-gray-400 hover:text-gray-500">
-              <span className="sr-only">{item.name}</span>
-              <item.icon className="h-6 w-6" aria-hidden="true" />
-            </a>
-          ))}
+            
+            <div className="mt-6 md:mt-0">
+              <p className="text-sm font-semibold gradient-text mb-2">Download our app</p>
+              <div className="flex space-x-3">
+                <button className="gradient-button text-xs py-2 px-4 rounded-lg hover:scale-105 transition-transform">
+                  App Store
+                </button>
+                <button className="gradient-button text-xs py-2 px-4 rounded-lg hover:scale-105 transition-transform">
+                  Play Store
+                </button>
+              </div>
+            </div>
+          </div>
+          
+          {/* Navigation links */}
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-8 mb-12">
+            <div>
+              <h3 className="text-sm font-semibold gradient-text mb-4">For Customers</h3>
+              <ul className="space-y-3">
+                {navigation.customers.map((item) => (
+                  <li key={item.name}>
+                    <Link to={item.href} className="text-sm text-gray-600 hover:text-blue-700 transition-colors">
+                      {item.name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            
+            <div>
+              <h3 className="text-sm font-semibold gradient-text mb-4">For Business</h3>
+              <ul className="space-y-3">
+                {navigation.business.map((item) => (
+                  <li key={item.name}>
+                    <Link to={item.href} className="text-sm text-gray-600 hover:text-blue-700 transition-colors">
+                      {item.name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            
+            <div>
+              <h3 className="text-sm font-semibold gradient-text mb-4">Company</h3>
+              <ul className="space-y-3">
+                {navigation.company.map((item) => (
+                  <li key={item.name}>
+                    <Link to={item.href} className="text-sm text-gray-600 hover:text-blue-700 transition-colors">
+                      {item.name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            
+            <div>
+              <h3 className="text-sm font-semibold gradient-text mb-4">Legal</h3>
+              <ul className="space-y-3">
+                {navigation.legal.map((item) => (
+                  <li key={item.name}>
+                    <Link to={item.href} className="text-sm text-gray-600 hover:text-blue-700 transition-colors">
+                      {item.name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            
+            <div>
+              <h3 className="text-sm font-semibold gradient-text mb-4">Follow Us</h3>
+              <div className="flex space-x-4">
+                {navigation.social.map((item) => (
+                  <a 
+                    key={item.name} 
+                    href={item.href} 
+                    className="text-gray-400 hover:text-blue-700 transition-colors"
+                  >
+                    <span className="sr-only">{item.name}</span>
+                    <item.icon className="h-6 w-6" aria-hidden="true" />
+                  </a>
+                ))}
+              </div>
+              <div className="mt-6">
+                <p className="text-xs text-gray-500">Stay updated with our newsletter</p>
+                <div className="mt-2 flex">
+                  <input 
+                    type="email" 
+                    placeholder="Your email" 
+                    className="px-3 py-2 border border-gray-300 rounded-l-lg text-sm focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-blue-600"
+                  />
+                  <button className="gradient-button px-4 py-2 rounded-r-lg text-xs">
+                    Subscribe
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          {/* Copyright */}
+          <div className="border-t border-gray-200 pt-8 flex flex-col sm:flex-row justify-between items-center">
+            <p className="text-sm text-gray-500">
+              &copy; {new Date().getFullYear()} Flauntly, Inc. All rights reserved.
+            </p>
+            <div className="mt-4 sm:mt-0">
+              <p className="text-xs text-gray-400">
+                Made with 💙 for the beauty and wellness community
+              </p>
+            </div>
+          </div>
         </div>
-        <p className="mt-10 text-center text-xs leading-5 text-gray-500">
-          &copy; {new Date().getFullYear()} Flauntly, Inc. All rights reserved.
-        </p>
       </div>
     </footer>
   );

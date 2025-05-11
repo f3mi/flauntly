@@ -6,18 +6,42 @@ export default {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        'sans': ['Inter', 'system-ui', 'sans-serif'],
+        'display': ['Space Grotesk', 'system-ui', 'sans-serif'],
+        'mono': ['JetBrains Mono', 'monospace'],
+        'accent': ['Outfit', 'system-ui', 'sans-serif'],
+      },
+      fontWeight: {
+        thin: '100',
+        extralight: '200',
+        light: '300',
+        normal: '400',
+        medium: '500',
+        semibold: '600',
+        bold: '700',
+        extrabold: '800',
+        black: '900',
+      },
+      lineHeight: {
+        'tight': '1.2',
+        'snug': '1.375',
+        'normal': '1.5',
+        'relaxed': '1.625',
+        'loose': '2',
+      },
       colors: {
         primary: {
-          50: '#f0f9ff',
-          100: '#e0f2fe',
-          200: '#bae6fd',
-          300: '#7dd3fc',
-          400: '#38bdf8',
-          500: '#0ea5e9',
-          600: '#0284c7',
-          700: '#0369a1',
-          800: '#075985',
-          900: '#0c4a6e',
+          50: '#f5f3ff',
+          100: '#ede9fe',
+          200: '#ddd6fe',
+          300: '#c4b5fd',
+          400: '#a78bfa',
+          500: '#8b5cf6',
+          600: '#7c3aed',
+          700: '#6d28d9',
+          800: '#5b21b6',
+          900: '#4c1d95',
         },
         secondary: {
           50: '#fdf4ff',
@@ -31,11 +55,6 @@ export default {
           800: '#86198f',
           900: '#701a75',
         }
-      },
-      fontFamily: {
-        sans: ['Cabinet Grotesk', 'DM Sans', 'ui-sans-serif', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
-        display: ['Cabinet Grotesk', 'Manrope', 'ui-sans-serif', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
-        cabinet: ['Cabinet Grotesk', 'sans-serif'],
       },
       fontSize: {
         '2xs': ['0.625rem', { lineHeight: '0.75rem' }], // 10px
@@ -53,12 +72,33 @@ export default {
         '8xl': ['6rem', { lineHeight: '1' }], // 96px
       },
       letterSpacing: {
-        tighter: '-0.05em',
-        tight: '-0.025em',
-        normal: '0em',
-        wide: '0.025em',
-        wider: '0.05em',
-        widest: '0.1em',
+        'tighter': '-0.05em',
+        'tight': '-0.025em',
+        'normal': '0em',
+        'wide': '0.025em',
+        'wider': '0.05em',
+        'widest': '0.1em',
+        'display': '0.02em',
+        'heading': '0.01em',
+      },
+      textDecorationThickness: {
+        'thin': '1px',
+        'medium': '2px',
+        'thick': '3px',
+      },
+      textUnderlineOffset: {
+        'small': '2px',
+        'medium': '4px',
+        'large': '6px',
+      },
+      textShadow: {
+        'sm': '0 1px 2px var(--tw-shadow-color)',
+        'DEFAULT': '0 2px 4px var(--tw-shadow-color)',
+        'lg': '0 8px 16px var(--tw-shadow-color)',
+      },
+      textBalance: {
+        'DEFAULT': 'balance',
+        'auto': 'auto',
       },
       boxShadow: {
         'soft': '0 2px 15px -3px rgba(0, 0, 0, 0.07), 0 10px 20px -2px rgba(0, 0, 0, 0.04)',
